@@ -7,11 +7,25 @@ var GITHUB_TOKEN = '9977f2941d4680fa042001d1e922e0e0d4162c99';
 var repoOwner = 'jquery';
 var repoName = 'jquery';
 
+
 var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
-console.log(requestURL);
+//console.log(requestURL);
+var requestOption = {
+  url: requestURL,
+  headers: {
+    'User-Agent': 'GitHub Avatar Downloader - Student Project'
+  }
+};
 
 function getRepoContributors(repoOwner, repoName, cb) {
-  // ...
+  request(requestOption, function (err, response, body) {
+    if (err) {
+      throw err;
+    }
+    //console.log("This is the URL Response Status Code:", response.statusCode);
+    //console.log("This is the URL Response Headers:", response.headers);
+    console.log("This is the URL Body:", body);
+  });
 }
 
 
