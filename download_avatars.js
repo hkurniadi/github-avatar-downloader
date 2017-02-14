@@ -7,7 +7,8 @@ var GITHUB_USER = 'hkurniadi';
 var GITHUB_TOKEN = '9977f2941d4680fa042001d1e922e0e0d4162c99';
 var repoOwner = process.argv[2];
 var repoName = process.argv[3];
-
+// console.log("Repo owner empty?", !repoOwner);
+// console.log("Repo name empty?", !repoName);
 
 var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
 //console.log(requestURL);
@@ -18,7 +19,20 @@ var requestOption = {
   }
 };
 
+function downloadImageByURL(url, filePath) {
+  request.get(url)
+    .on('error', function(err) {
+      throw err;
+    })
+    .pipe(fs.createWriteStream(filePath));
+};
+
 function getRepoContributors(repoOwner, repoName, cb) {
+  if (!repoOwner || !repoName) {
+    console.log("Please provide repoOwner and repoName");
+    return;
+  }
+
   request(requestOption, function (err, response, body) {
     if (err) {
       throw err;
@@ -39,13 +53,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
-function downloadImageByURL(url, filePath) {
-  request.get(url)
-    .on('error', function(err) {
-      throw err;
-    })
-    .pipe(fs.createWriteStream(filePath));
-};
+
 
 // getRepoContributors("jquery", "jquery", function(err, result) {
 //   console.log("Errors:", err);
@@ -54,7 +62,7 @@ function downloadImageByURL(url, filePath) {
 
 //downloadImageByURL('https://avatars.githubusercontent.com/u/43004?v=3', './avatars/image.jpg')
 
-getRepoContributors("jquery", "jquery", downloadImageByURL);
+getRepoContributors(repoOwner, repoName, downloadImageByURL);
 
 
 
