@@ -8,6 +8,9 @@ Given a GitHub repository name and owner, download all the contributors' profile
 
 This program should be executed from the command line, in the following manner:
 
+`node download_avatars.js <repo owner> <repo name>`
+
+For example:
 `node download_avatars.js jquery jquery`
 
-The download_avatars.js then will download all the contributors' avatars and save them in avatars/ folder.
+The download_avatars.js will take repo owner and repo name from the command line, then will download all the contributors' avatars inside that repo and save them in avatars/ directory.
