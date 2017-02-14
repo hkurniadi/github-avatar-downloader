@@ -24,7 +24,11 @@ function getRepoContributors(repoOwner, repoName, cb) {
     }
     //console.log("This is the URL Response Status Code:", response.statusCode);
     //console.log("This is the URL Response Headers:", response.headers);
-    console.log("This is the URL Body:", body);
+    //console.log("This is the URL Body:", body);
+    var contributors = JSON.parse(body);
+    for (var eachLogin of contributors) {
+      console.log(eachLogin.avatar_url);
+    }
   });
 }
 
