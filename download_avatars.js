@@ -1,17 +1,16 @@
 var request = require('request');
 var fs = require('fs');
+require('dotenv').config();
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
-var GITHUB_USER = 'hkurniadi';
-var GITHUB_TOKEN = '9977f2941d4680fa042001d1e922e0e0d4162c99';
-var repoOwner = process.argv[2];
-var repoName = process.argv[3];
-// console.log("Repo owner empty?", !repoOwner);
-// console.log("Repo name empty?", !repoName);
+var GITHUB_USER = process.env.GITHUB_USER;
+var GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+var OWNER = process.argv[2];
+var NAME = process.argv[3];
 
-var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
-//console.log(requestURL);
+var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + OWNER + '/' + NAME + '/contributors';
+
 var requestOption = {
   url: requestURL,
   headers: {
@@ -37,32 +36,18 @@ function getRepoContributors(repoOwner, repoName, cb) {
     if (err) {
       throw err;
     }
-    //console.log("This is the URL Response Status Code:", response.statusCode);
-    //console.log("This is the URL Response Headers:", response.headers);
 
     var contributors = JSON.parse(body);
 
-    // console.log("This is the URL Body:", contributors);
     for (var eachLogin of contributors) {
       var loginName = eachLogin.login;
       var filePath = './avatars/' + loginName + '.jpg';
-      //console.log(filePath);
       cb(eachLogin.avatar_url, filePath);
-      //console.log(eachLogin.avatar_url);
     }
   });
 }
 
-
-
-// getRepoContributors("jquery", "jquery", function(err, result) {
-//   console.log("Errors:", err);
-//   console.log("Result:", result);
-// });
-
-//downloadImageByURL('https://avatars.githubusercontent.com/u/43004?v=3', './avatars/image.jpg')
-
-getRepoContributors(repoOwner, repoName, downloadImageByURL);
+getRepoContributors(OWNER, NAME, downloadImageByURL);
 
 
 
